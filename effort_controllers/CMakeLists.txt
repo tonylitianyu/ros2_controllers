@@ -12,6 +12,8 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
+    angles
+    control_toolbox
     forward_command_controller
     pluginlib
     rclcpp
@@ -25,6 +27,7 @@ endforeach()
 add_library(${PROJECT_NAME}
   SHARED
   src/joint_group_effort_controller.cpp
+  src/joint_group_position_controller.cpp
 )
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 ament_target_dependencies(${PROJECT_NAME}

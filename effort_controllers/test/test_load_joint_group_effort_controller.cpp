@@ -34,6 +34,7 @@ TEST(TestLoadJointGroupVelocityController, load_controller)
 
   ASSERT_NO_THROW(cm.load_controller(
     "test_joint_group_effort_controller", "effort_controllers/JointGroupEffortController"));
+  
 
   rclcpp::shutdown();
 }

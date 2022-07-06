@@ -239,4 +239,7 @@ TEST_F(JointGroupEffortControllerTest, StopJointsOnDeactivateTest)
   ASSERT_EQ(joint_1_cmd_.get_value(), 0.0);
   ASSERT_EQ(joint_2_cmd_.get_value(), 0.0);
   ASSERT_EQ(joint_3_cmd_.get_value(), 0.0);
+
+
+
 }
