@@ -130,6 +130,12 @@ controller_interface::return_type JointGroupPositionController::update(
 
   for(auto i = 0u; i < joint_names_.size(); ++i)
   {
+    std::string enable_prefix = "enable";
+    auto enable_flag = get_node()->get_parameter(enable_prefix + "." + joint_names_[i] + ".status").as_int();
+    if (enable_flag == 0){
+      continue;
+    }
+
     double command_position = joint_position_commands->data[i];
     double current_position = state_interfaces_[i].get_value();
     auto error = angles::shortest_angular_distance(current_position, command_position);
