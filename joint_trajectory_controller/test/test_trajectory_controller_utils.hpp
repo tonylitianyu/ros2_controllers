@@ -81,6 +81,11 @@ public:
 
   void set_joint_names(const std::vector<std::string> & joint_names) { joint_names_ = joint_names; }
 
+  void set_command_joint_names(const std::vector<std::string> & command_joint_names)
+  {
+    command_joint_names_ = command_joint_names;
+  }
+
   void set_command_interfaces(const std::vector<std::string> & command_interfaces)
   {
     command_interface_types_ = command_interfaces;
@@ -115,6 +120,8 @@ public:
     controller_name_ = "test_joint_trajectory_controller";
 
     joint_names_ = {"joint1", "joint2", "joint3"};
+    command_joint_names_ = {
+      "following_controller/joint1", "following_controller/joint2", "following_controller/joint3"};
     joint_pos_.resize(joint_names_.size(), 0.0);
     joint_state_pos_.resize(joint_names_.size(), 0.0);
     joint_vel_.resize(joint_names_.size(), 0.0);
@@ -265,7 +272,9 @@ public:
     // I do not understand why spin_some provides only one message
     qos.keep_last(1);
     state_subscriber_ = traj_lifecycle_node->create_subscription<JointTrajectoryControllerState>(
-      controller_name_ + "/state", qos, [&](std::shared_ptr<JointTrajectoryControllerState> msg) {
+      controller_name_ + "/state", qos,
+      [&](std::shared_ptr<JointTrajectoryControllerState> msg)
+      {
         std::lock_guard<std::mutex> guard(state_mutex_);
         state_msg_ = msg;
       });
@@ -279,7 +288,7 @@ public:
    */
   void publish(
     const builtin_interfaces::msg::Duration & delay_btwn_points,
-    const std::vector<std::vector<double>> & points, rclcpp::Time start_time = rclcpp::Time(),
+    const std::vector<std::vector<double>> & points, rclcpp::Time start_time,
     const std::vector<std::string> & joint_names = {},
     const std::vector<std::vector<double>> & points_velocities = {})
   {
@@ -394,6 +403,7 @@ public:
   std::string controller_name_;
 
   std::vector<std::string> joint_names_;
+  std::vector<std::string> command_joint_names_;
   std::vector<std::string> command_interface_types_;
   std::vector<std::string> state_interface_types_;
 
